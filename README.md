@@ -7,7 +7,8 @@ to include additional commands (e.g. commands required for [appium](
 https://github.com/appium/appium)).
 
 Currently, few commands are implemented.  But the groundwork has been laid,
-future commands should be easy to add, and PRs are very welcome!
+future commands should be easy to add, and PRs are very welcome!  See
+[CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 Usage
 -----
