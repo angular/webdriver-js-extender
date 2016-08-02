@@ -2,6 +2,30 @@ let webdriver = require('selenium-webdriver');
 let Command = require('selenium-webdriver/lib/command').Command;
 let buildPath = require('selenium-webdriver/http').buildPath;
 
+export function buildMockDriver(sessionId: number, 
+    defineCallback: (name: string, method: string, path: string) => void,
+    execCallback: (path: string, method: string, data: Object) => any):
+    webdriver.WebDriver {
+
+  let paths: { [key:string]: string } = {};
+  let methods: { [key:string]: string } = {};
+  let mockSession = new (webdriver as any).Session(sessionId, {});
+
+  return new (webdriver as any).WebDriver(mockSession, {
+    execute: (command: Command) => {
+      var params = command.getParameters();
+      return webdriver.promise.fulfilled(execCallback(
+          buildPath(paths[command.getName()], params),
+          methods[command.getName()], params));
+    },
+    defineCommand: (name: string, method: string, path: string) => {
+      paths[name] = path;
+      methods[name] = method;
+      defineCallback(name, method, path);
+    }
+  });
+}
+
 export class MockDriver {
   paths_: { [key:string]: string };
 
@@ -30,5 +54,9 @@ export class MockDriver {
           buildPath(this.paths_[command.getName()], params),
           description, params));
     };
+  }
+
+  getExecutor() {
+    return this.executor_;
   }
 }

@@ -4,10 +4,16 @@ let Command = require('selenium-webdriver/lib/command').Command;
 export class Extender {
   driver_: webdriver.WebDriver;
   params_: { [key:string]: string[] };
+  executor_: {
+    defineCommand: (name: string, method: string, path: string) => void
+  };
+
 
   constructor(driver: webdriver.WebDriver) {
     this.driver_ = driver;
     this.params_ = {};
+    this.executor_ = driver.getExecutor ? (driver.getExecutor as Function)() :
+        driver.executor_;
   }
 
   /**
@@ -25,7 +31,7 @@ export class Extender {
    *     "/path/:variable/segment".
    */
   defineCommand(name: string, params: string[], method: string, path: string) {
-    this.driver_.executor_.defineCommand(name, method, path);
+    this.executor_.defineCommand(name, method, path);
     this.params_[name] = params;
   }
 
