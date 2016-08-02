@@ -16,9 +16,12 @@ declare namespace webdriver {
     var fulfilled: <T>(value: T) => webdriver.promise.Promise<T>
   }
   class WebDriver {
-    executor_: {
-      defineCommand: (name: string, method: string, path: string) => void
-    };
+    executor_: any | void;
+    getExecutor: Function | void;
     schedule: <T>(cmd: Command, desc: string) => webdriver.promise.Promise<T>;
   }
-}   
+}
+
+declare namespace Promise {
+  var resolve: Function
+} 

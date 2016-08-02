@@ -1,9 +1,9 @@
 let webdriver = require('selenium-webdriver');
 import {Extender} from '../lib/extender';
-import {MockDriver} from './mockdriver';
+import {buildMockDriver} from './mockdriver';
 
 let noop_define = (n: string, m: string, p: string) => {};
-let noop_exec = (p: string, d: string, data: Object) => {};
+let noop_exec = (p: string, m: string, d: Object) => {};
 
 describe('extender', () => {
   let sessionId = 1234;
@@ -12,7 +12,7 @@ describe('extender', () => {
     let name = 'customCommand';
     let method = 'post';
     let path = '/custom/command';
-    let mockdriver = new MockDriver(sessionId,
+    let mockdriver = buildMockDriver(sessionId,
       (n: string, m: string, p: string) => {
         expect(n).toEqual(name);
         expect(m).toEqual(method);
@@ -20,7 +20,7 @@ describe('extender', () => {
         done();
       },
     noop_exec);
-    let extender = new Extender(<webdriver.WebDriver>mockdriver);
+    let extender = new Extender(mockdriver);
     extender.defineCommand(name, [], method, path);
   });
 
@@ -28,16 +28,16 @@ describe('extender', () => {
     let name = 'customCommand';
     let method = 'post';
     let path = '/custom/command';
-    let mockdriver = new MockDriver(sessionId, noop_define,
-      (p: string, d: string, data: Object) => {
+    let mockdriver = buildMockDriver(sessionId, noop_define,
+      (p: string, m: string, d: Object) => {
         expect(p).toEqual(path);
-        expect(d).toEqual('Custom Command: ' + name + '()');
-        expect(data['sessionId']).toEqual(sessionId);
-        expect(Object.keys(data).length).toEqual(1);
+        expect(m).toEqual(method);
+        expect(d['sessionId']).toEqual(sessionId);
+        expect(Object.keys(d).length).toEqual(1);
         done();
       }
     );
-    let extender = new Extender(<webdriver.WebDriver>mockdriver);
+    let extender = new Extender(mockdriver);
     extender.defineCommand(name, [], method, path);
     extender.execCommand(name, []);
   });
@@ -48,13 +48,13 @@ describe('extender', () => {
     let paramNames = ['var1', 'var2'];
     let paramValues = ['val1', 'val2'];
     let path = '/custom/:var1/command';
-    let mockdriver = new MockDriver(sessionId, noop_define,
-      (p: string, d: string, data: Object) => {
+    let mockdriver = buildMockDriver(sessionId, noop_define,
+      (p: string, m: string, d: Object) => {
         expect(p).toEqual('/custom/val1/command');
-        expect(d).toEqual('Custom Command: ' + name + '("val1", "val2")');
-        expect(data['sessionId']).toEqual(sessionId);
-        expect(data['var2']).toEqual('val2');
-        expect(Object.keys(data).length).toEqual(2);
+        expect(m).toEqual(method);
+        expect(d['sessionId']).toEqual(sessionId);
+        expect(d['var2']).toEqual('val2');
+        expect(Object.keys(d).length).toEqual(2);
         done();
       }
     );
@@ -64,8 +64,8 @@ describe('extender', () => {
   });
 
   it('should not be able to exec a command that has not been defined', () => {
-    let mockdriver = new MockDriver(sessionId, noop_define, noop_exec);
-    let extender = new Extender(<webdriver.WebDriver>mockdriver);
+    let mockdriver = buildMockDriver(sessionId, noop_define, noop_exec);
+    let extender = new Extender(mockdriver);
     expect(() => { extender.execCommand('', []); }).toThrowError(RangeError);
   });
 
@@ -73,8 +73,8 @@ describe('extender', () => {
     let name = 'customCommand';
     let method = 'post';
     let path = '/custom/:command';
-    let mockdriver = new MockDriver(sessionId, noop_define, noop_exec);
-    let extender = new Extender(<webdriver.WebDriver>mockdriver);
+    let mockdriver = buildMockDriver(sessionId, noop_define, noop_exec);
+    let extender = new Extender(mockdriver);
     extender.defineCommand(name, ['command'], method, path);
     expect(() => { extender.execCommand(name, []); }).toThrowError(RangeError);
   });

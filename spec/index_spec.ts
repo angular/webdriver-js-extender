@@ -1,18 +1,20 @@
 let webdriver = require('selenium-webdriver');
-import {extend} from '../lib';
-import {MockDriver} from './mockdriver';
+import {extend, patch} from '../lib';
+import {DeferredExecutor} from '../lib/deferredExecutor';
+import {buildMockDriver} from './mockdriver';
 
 
 describe('extender', () => {
   it('should support setting/getting the network connection', (done) => {
     let ncType : number;
-    let baseDriver = new MockDriver(42, (n: string, m: string, p: string) => {},
-      (path: string, description: string, data: Object) => {
+    let baseDriver = buildMockDriver(42,
+      (name: string, method: string, path: string) => {},
+      (path: string, method: string, data: Object) => {
         expect(path).toEqual('/session/42/network_connection');
-        if(description[16] == 'g') {
+        if(method == 'GET') {
           expect(Object.keys(data).length).toEqual(0);
           return ncType;
-        } else if (description[16] == 's') {
+        } else if (method == 'POST') {
           expect(JSON.stringify(Object.keys(data))).toEqual('["type"]');
           ncType = data['type'];
         }
@@ -25,5 +27,13 @@ describe('extender', () => {
       expect(connectionType).toEqual(5);
       done();
     });
+  });
+
+  it('should patch selenium-webdriver', () => {
+    patch(require('selenium-webdriver/lib/command'),
+        require('selenium-webdriver/executors'),
+        require('selenium-webdriver/http'));
+    expect(require('selenium-webdriver/executors').createExecutor(
+      'http://localhost')).toEqual(jasmine.any(DeferredExecutor));
   });
 });
