@@ -41,6 +41,11 @@ export function extend(baseDriver: webdriver.WebDriver): ExtendedWebDriver {
  * @param {*} http The object at 'selenium-webdriver/http'
  */
 export function patch(lib_command: any, executors: any, http: any) {
+  if (lib_command.DeferredExecutor === undefined) {
+    throw new Error("The version of `selenium-webdriver` you provided does " +
+        "not use Deferred Executors.  Are you using version 3.x or above? If " +
+        "so, you do not need to call the `patch()` function.");
+  }
   lib_command.DeferredExecutor = DeferredExecutor;
   executors.DeferredExecutor = DeferredExecutor;
   // Based off of https://github.com/SeleniumHQ/selenium/blob/master/javascript/node/selenium-webdriver/executors.js#L43
