@@ -1,10 +1,10 @@
 'use strict';
 
 var gulp = require('gulp');
-var clangFormat = require('clang-format');
-var gulpFormat = require('gulp-clang-format');
 var runSequence = require('run-sequence');
 var spawn = require('child_process').spawn;
+const format = require('gulp-clang-format');
+const clangFormat = require('clang-format');
 
 var runSpawn = function(done, task, opt_arg) {
   opt_arg = typeof opt_arg !== 'undefined' ? opt_arg : [];
@@ -30,24 +30,22 @@ gulp.task('copy', function() {
       .pipe(gulp.dest('built/'));
 });
 
-gulp.task('clang', function() {
-  return gulp.src(['src/**/*.ts'])
-      .pipe(gulpFormat.checkFormat('file', clangFormat))
-      .on('warning', function(e) {
-    console.log(e);
-  });
+gulp.task('format:enforce', () => {
+  return gulp.src(['lib/**/*.ts']).pipe(
+    format.checkFormat('file', clangFormat, {verbose: true, fail: true}));
 });
 
-gulp.task('typings', function(done) {
-  runSpawn(done, 'node', ['node_modules/typings/dist/bin.js', 'install']);
+gulp.task('format', () => {
+  return gulp.src(['lib/**/*.ts'], { base: '.' }).pipe(
+    format.format('file', clangFormat)).pipe(gulp.dest('.'));
 });
 
 gulp.task('tsc', function(done) {
-  runSpawn(done, 'node', ['node_modules/typescript/bin/tsc']);
+  runSpawn(done, process.execPath, ['node_modules/typescript/bin/tsc']);
 });
 
 gulp.task('prepublish', function(done) {
-  runSequence(['typings', 'clang'], 'tsc', 'copy', done);
+  runSequence('format', 'tsc', 'copy', done);
 });
 
 gulp.task('default',['prepublish']);
@@ -56,5 +54,5 @@ gulp.task('build',['prepublish']);
 gulp.task('test', ['build'], function(done) {
   var opt_arg = [];
   opt_arg.push('node_modules/jasmine/bin/jasmine.js');
-  runSpawn(done, 'node', opt_arg);
+  runSpawn(done, process.execPath, opt_arg);
 });

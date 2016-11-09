@@ -1,19 +1,17 @@
-let webdriver = require('selenium-webdriver');
+import * as webdriver from 'selenium-webdriver';
 let Command = require('selenium-webdriver/lib/command').Command;
 
 export class Extender {
   driver_: webdriver.WebDriver;
-  params_: { [key:string]: string[] };
-  executor_: {
-    defineCommand: (name: string, method: string, path: string) => void
-  };
+  params_: {[key: string]: string[]};
+  executor_: {defineCommand: (name: string, method: string, path: string) => void};
 
 
   constructor(driver: webdriver.WebDriver) {
     this.driver_ = driver;
     this.params_ = {};
-    this.executor_ = driver.getExecutor ? (driver.getExecutor as Function)() :
-        driver.executor_;
+    this.executor_ =
+        (driver as any).getExecutor ? (driver as any).getExecutor() : (driver as any).executor_;
   }
 
   /**
@@ -46,26 +44,29 @@ export class Extender {
   execCommand<T>(name: string, params: any[]): webdriver.promise.Promise<T> {
     var paramNames = this.params_[name];
     if (paramNames === undefined) {
-      throw new RangeError('The command "' + name +
-          '" has not yet been defined');
+      throw new RangeError('The command "' + name + '" has not yet been defined');
     }
     if (paramNames.length !== params.length) {
-      throw new RangeError('The command "' + name + '" expected' +
-          paramNames.length + ' parameters, got ' + params.length);
+      throw new RangeError(
+          'The command "' + name + '" expected' + paramNames.length + ' parameters, got ' +
+          params.length);
     }
     var command = new Command(name);
     for (var i = 0; i < params.length; i++) {
       command.setParameter(paramNames[i], params[i]);
     }
-    return this.driver_.schedule(command, 'Custom Command: ' + name + '(' +
-        params.map((x: any) => {
-          if ((typeof x == 'number') || (typeof x == 'boolean') ||
-              (typeof x == 'function') || (x == null)) {
-            return x.toString();
-          } else {
-            return JSON.stringify(x);
-          }
-        }).join(', ') + ')');
+    return this.driver_.schedule(
+        command, 'Custom Command: ' + name + '(' +
+            params
+                .map((x: any) => {
+                  if ((typeof x == 'number') || (typeof x == 'boolean') ||
+                      (typeof x == 'function') || (x == null)) {
+                    return x.toString();
+                  } else {
+                    return JSON.stringify(x);
+                  }
+                })
+                .join(', ') +
+            ')');
   }
 }
-
