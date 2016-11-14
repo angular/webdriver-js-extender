@@ -1,5 +1,5 @@
-var webdriver = require('selenium-webdriver');
-import {DeferredExecutor} from '../lib/deferredExecutor';
+import * as webdriver from 'selenium-webdriver';
+import {DeferredExecutor} from '../lib/deferred_executor';
 
 
 describe('Deferred Executor', () => {

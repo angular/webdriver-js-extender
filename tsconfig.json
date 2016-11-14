@@ -3,7 +3,7 @@
     "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
-    "sourceMap": false,
+    "sourceMap": true,
     "declaration": true,
     "removeComments": false,
     "noImplicitAny": true,
@@ -11,7 +11,6 @@
   },
   "exclude": [
     "built",
-    "node_modules",
-    "typings/globals"
+    "node_modules"
   ]
 }

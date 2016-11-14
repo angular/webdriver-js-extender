@@ -1,18 +1,22 @@
-let webdriver = require('selenium-webdriver');
-let Command = require('selenium-webdriver/lib/command').Command;
+import * as webdriver from 'selenium-webdriver';
 let buildPath = require('selenium-webdriver/http').buildPath;
 
-export function buildMockDriver(sessionId: number, 
+export interface Data {
+  sessionId: string;
+  [key:string]: any;
+}
+
+export function buildMockDriver(sessionId: string,
     defineCallback: (name: string, method: string, path: string) => void,
-    execCallback: (path: string, method: string, data: Object) => any):
+    execCallback: (path: string, method: string, data: Data) => any):
     webdriver.WebDriver {
 
   let paths: { [key:string]: string } = {};
   let methods: { [key:string]: string } = {};
-  let mockSession = new (webdriver as any).Session(sessionId, {});
+  let mockSession = new webdriver.Session(sessionId, {});
 
-  return new (webdriver as any).WebDriver(mockSession, {
-    execute: (command: Command) => {
+  return new webdriver.WebDriver(mockSession, {
+    execute: (command: webdriver.Command) => {
       var params = command.getParameters();
       return webdriver.promise.fulfilled(execCallback(
           buildPath(paths[command.getName()], params),
@@ -23,7 +27,7 @@ export function buildMockDriver(sessionId: number,
       methods[name] = method;
       defineCallback(name, method, path);
     }
-  });
+  } as webdriver.Executor);
 }
 
 export class MockDriver {
@@ -32,12 +36,12 @@ export class MockDriver {
   // Mocked methods
   executor_: {defineCommand:
       (name: string, method: string, path: string) => void}
-  schedule: (command: Command, description: string) =>
+  schedule: (command: webdriver.Command, description: string) =>
       webdriver.promise.Promise<any>;
 
-  constructor(sessionId: number,
+  constructor(sessionId: string,
       defineCallback: (name: string, method: string, path: string) => void,
-      execCallback: (path: string, description: string, data: Object) => any) {
+      execCallback: (path: string, description: string, data: Data) => any) {
 
     this.paths_ = {};
 
@@ -47,7 +51,7 @@ export class MockDriver {
         defineCallback(name, method, path);
       }
     };
-    this.schedule = (command: Command, description: string) => {
+    this.schedule = (command: webdriver.Command, description: string) => {
       command.setParameter('sessionId', sessionId);
       var params = command.getParameters();
       return webdriver.promise.fulfilled(execCallback(

@@ -1,29 +1,21 @@
-let webdriver = require('selenium-webdriver');
+import * as webdriver from 'selenium-webdriver';
+
+import {DeferredExecutor} from './deferred_executor';
 import {Extender} from './extender';
-import {DeferredExecutor} from './deferredExecutor';
+import * as SimpleCommands from './simple_commands';
 
 export interface ExtendedWebDriver extends webdriver.WebDriver {
   getNetworkConnection: () => webdriver.promise.Promise<number>;
-  setNetworkConnection: (type: number) => webdriver.promise.Promise<any>;
+  setNetworkConnection: (type: number) => webdriver.promise.Promise<void>;
 }
 
 export function extend(baseDriver: webdriver.WebDriver): ExtendedWebDriver {
   var extender = new Extender(baseDriver);
-  let extendedDriver : ExtendedWebDriver = <ExtendedWebDriver>baseDriver;
+  let extendedDriver: ExtendedWebDriver = baseDriver as ExtendedWebDriver;
 
-  // Get Network Connection
-  extender.defineCommand('getNetworkConnection', [],
-    'GET', '/session/:sessionId/network_connection');
-  extendedDriver.getNetworkConnection = () => {
-    return extender.execCommand('getNetworkConnection', []);
-  };
-
-  // Set Network Connection
-  extender.defineCommand('setNetworkConnection', ['type'],
-    'POST', '/session/:sessionId/network_connection');
-  extendedDriver.setNetworkConnection = (type: number) => {
-    return extender.execCommand('setNetworkConnection', [type]);
-  };
+  // Simple commands
+  extendedDriver.getNetworkConnection = SimpleCommands.getNetworkConnection.compile(extender);
+  extendedDriver.setNetworkConnection = SimpleCommands.setNetworkConnection.compile(extender);
 
   return extendedDriver;
 }
@@ -42,16 +34,17 @@ export function extend(baseDriver: webdriver.WebDriver): ExtendedWebDriver {
  */
 export function patch(lib_command: any, executors: any, http: any) {
   if (lib_command.DeferredExecutor === undefined) {
-    throw new Error("The version of `selenium-webdriver` you provided does " +
-        "not use Deferred Executors.  Are you using version 3.x or above? If " +
-        "so, you do not need to call the `patch()` function.");
+    throw new Error(
+        'The version of `selenium-webdriver` you provided does ' +
+        'not use Deferred Executors.  Are you using version 3.x or above? If ' +
+        'so, you do not need to call the `patch()` function.');
   }
   lib_command.DeferredExecutor = DeferredExecutor;
   executors.DeferredExecutor = DeferredExecutor;
-  // Based off of https://github.com/SeleniumHQ/selenium/blob/master/javascript/node/selenium-webdriver/executors.js#L43
+  // Based off of
+  // https://github.com/SeleniumHQ/selenium/blob/selenium-2.53.0/javascript/node/selenium-webdriver/executors.js#L45
   executors.createExecutor = (url: any, opt_agent?: any, opt_proxy?: any) => {
-    url = Promise.resolve(url);
-    return new DeferredExecutor(url.then((url: any) => {
+    return new DeferredExecutor(webdriver.promise.when(url, (url: any) => {
       var client = new http.HttpClient(url, opt_agent, opt_proxy);
       return new http.Executor(client);
     }));
