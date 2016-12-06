@@ -9,13 +9,15 @@ export interface ExtendedWebDriver extends webdriver.WebDriver {
   setNetworkConnection: (type: number) => webdriver.promise.Promise<void>;
 }
 
-export function extend(baseDriver: webdriver.WebDriver): ExtendedWebDriver {
+export function extend(baseDriver: webdriver.WebDriver, fallbackOnWD = false): ExtendedWebDriver {
   var extender = new Extender(baseDriver);
   let extendedDriver: ExtendedWebDriver = baseDriver as ExtendedWebDriver;
 
   // Simple commands
-  extendedDriver.getNetworkConnection = SimpleCommands.getNetworkConnection.compile(extender);
-  extendedDriver.setNetworkConnection = SimpleCommands.setNetworkConnection.compile(extender);
+  extendedDriver.getNetworkConnection =
+      SimpleCommands.getNetworkConnection.compile(extender, fallbackOnWD);
+  extendedDriver.setNetworkConnection =
+      SimpleCommands.setNetworkConnection.compile(extender, fallbackOnWD);
 
   return extendedDriver;
 }
