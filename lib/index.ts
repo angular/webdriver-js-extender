@@ -1,21 +1,24 @@
 import * as webdriver from 'selenium-webdriver';
 
+import {CommandDefinition} from './command_definition';
+import * as commandDefinitions from './command_definitions';
 import {DeferredExecutor} from './deferred_executor';
 import {Extender} from './extender';
-import * as SimpleCommands from './simple_commands';
 
 export interface ExtendedWebDriver extends webdriver.WebDriver {
   getNetworkConnection: () => webdriver.promise.Promise<number>;
   setNetworkConnection: (type: number) => webdriver.promise.Promise<void>;
 }
 
-export function extend(baseDriver: webdriver.WebDriver): ExtendedWebDriver {
+export function extend(
+    baseDriver: webdriver.WebDriver, fallbackGracefully = false): ExtendedWebDriver {
   var extender = new Extender(baseDriver);
   let extendedDriver: ExtendedWebDriver = baseDriver as ExtendedWebDriver;
 
-  // Simple commands
-  extendedDriver.getNetworkConnection = SimpleCommands.getNetworkConnection.compile(extender);
-  extendedDriver.setNetworkConnection = SimpleCommands.setNetworkConnection.compile(extender);
+  for (let commandName in commandDefinitions) {
+    (extendedDriver as any)[commandName] =
+        (commandDefinitions as any)[commandName].compile(extender, fallbackGracefully);
+  }
 
   return extendedDriver;
 }
