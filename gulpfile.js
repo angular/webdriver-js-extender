@@ -26,7 +26,7 @@ var runSpawn = function(done, task, opt_arg) {
 };
 
 gulp.task('copy', function() {
-  return gulp.src(['config.json', 'package.json'])
+  return gulp.src(['**/*.apk', 'package.json'])
       .pipe(gulp.dest('built/'));
 });
 

@@ -5,8 +5,8 @@ import {Extender} from './extender';
 
 export class CommandDefinition<T> {
   constructor(
-      public name: string, public params: string[], public method: string, public path: string,
-      private preprocessParams: (...args: any[]) => any[] = (x) => x) {}
+      public name: string, public params: string[], public method: 'GET'|'POST'|'DELETE'|'PUT',
+      public path: string, private preprocessParams: (...args: any[]) => any[] = (x) => x) {}
 
   compile(extender: Extender, silentFailure: boolean) {
     try {

@@ -48,7 +48,7 @@ export class Extender {
     }
     if (paramNames.length !== params.length) {
       throw new RangeError(
-          'The command "' + name + '" expected' + paramNames.length + ' parameters, got ' +
+          'The command "' + name + '" expected ' + paramNames.length + ' parameters, got ' +
           params.length);
     }
     var command = new Command(name);
