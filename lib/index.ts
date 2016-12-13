@@ -6,9 +6,37 @@ import {DeferredExecutor} from './deferred_executor';
 import {Extender} from './extender';
 
 export interface ExtendedWebDriver extends webdriver.WebDriver {
-  getNetworkConnection: () => webdriver.promise.Promise<number>;
-  setNetworkConnection: (type: number) => webdriver.promise.Promise<void>;
-
+  getNetworkConnection: () => webdriver.promise.Promise<0|1|2|3|4|5|6|7>;
+  setNetworkConnection:
+      (typeOrAirplaneMode: 0|1|2|3|4|5|6|7|boolean, wifi?: boolean,
+       data?: boolean) => webdriver.promise.Promise<void>;
+  toggleAirplaneMode: () => webdriver.promise.Promise<void>;
+  toggleWiFi: () => webdriver.promise.Promise<void>;
+  toggleData: () => webdriver.promise.Promise<void>;
+  toggleLocationServices: () => webdriver.promise.Promise<void>;
+  getGeolocation:
+      () => webdriver.promise.Promise<{latitude: number, longitude: number, altitude: number}>;
+  setGeolocation:
+      (latitude?: number, longitude?: number, altitude?: number) => webdriver.promise.Promise<void>;
+  getCurrentDeviceActivity: () => webdriver.promise.Promise<string>;
+  startDeviceActivity:
+      (appPackage: string, appActivity: string, appWaitPackage?: string,
+       appWaitActivity?: string) => webdriver.promise.Promise<void>;
+  getAppiumSettings: () => webdriver.promise.Promise<{[name: string]: any}>;
+  setAppiumSettings: (settings: {[name: string]: any}) => webdriver.promise.Promise<void>;
+  getCurrentContext: () => webdriver.promise.Promise<string>;
+  selectContext: (name: string) => webdriver.promise.Promise<void>;
+  getScreenOrientation: () => webdriver.promise.Promise<'LANDSCAPE'|'PORTRAIT'>;
+  setScreenOrientation: (orientation: string) => webdriver.promise.Promise<void>;
+  isDeviceLocked: () => webdriver.promise.Promise<boolean>;
+  lockDevice: (delay?: number) => webdriver.promise.Promise<void>;
+  unlockDevice: () => webdriver.promise.Promise<void>;
+  installApp: (appPath: string) => webdriver.promise.Promise<void>;
+  isAppInstalled: (bundleId: string) => webdriver.promise.Promise<boolean>;
+  removeApp: (appId: string) => webdriver.promise.Promise<void>;
+  pullFileFromDevice: (path: string) => webdriver.promise.Promise<string>;
+  pullFolderFromDevice: (path: string) => webdriver.promise.Promise<any>;
+  pushFileToDevice: (path: string, base64Data: string) => webdriver.promise.Promise<void>;
   listContexts: () => webdriver.promise.Promise<string[]>;
   uploadFile: (base64Data: string) => webdriver.promise.Promise<void>;
   switchToParentFrame: () => webdriver.promise.Promise<void>;
