@@ -8,6 +8,25 @@ import {Extender} from './extender';
 export interface ExtendedWebDriver extends webdriver.WebDriver {
   getNetworkConnection: () => webdriver.promise.Promise<number>;
   setNetworkConnection: (type: number) => webdriver.promise.Promise<void>;
+
+  listContexts: () => webdriver.promise.Promise<string[]>;
+  uploadFile: (base64Data: string) => webdriver.promise.Promise<void>;
+  switchToParentFrame: () => webdriver.promise.Promise<void>;
+  fullscreen: () => webdriver.promise.Promise<void>;
+  sendAppToBackground: (delay?: number) => webdriver.promise.Promise<void>;
+  closeApp: () => webdriver.promise.Promise<void>;
+  getAppStrings: (language?: string) => webdriver.promise.Promise<string[]>;
+  launchSession: () => webdriver.promise.Promise<void>;
+  resetApp: () => webdriver.promise.Promise<void>;
+  hideSoftKeyboard:
+      (strategy?: 'default'|'tapOutside'|'tapOut'|'swipeDown'|'pressKey'|'press',
+       key?: string) => webdriver.promise.Promise<void>;
+  getDeviceTime: () => webdriver.promise.Promise<string>;
+  openDeviceNotifications: () => webdriver.promise.Promise<void>;
+  rotationGesture:
+      (x?: number, y?: number, duration?: number, rotation?: number,
+       touchCount?: 1|2|3|4|5) => webdriver.promise.Promise<void>;
+  shakeDevice: () => webdriver.promise.Promise<void>;
 }
 
 export function extend(
