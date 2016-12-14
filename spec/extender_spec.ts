@@ -39,7 +39,7 @@ describe('extender', () => {
     );
     let extender = new Extender(mockdriver);
     extender.defineCommand(name, [], method, path);
-    extender.execCommand(name, []);
+    extender.execCommand(name, method, []);
   });
 
   it('should use command parameters', (done) => {
@@ -60,13 +60,13 @@ describe('extender', () => {
     );
     let extender = new Extender(mockdriver as webdriver.WebDriver);
     extender.defineCommand(name, paramNames, method, path);
-    extender.execCommand(name, paramValues);
+    extender.execCommand(name, method, paramValues);
   });
 
   it('should not be able to exec a command that has not been defined', () => {
     let mockdriver = buildMockDriver(sessionId, noop_define, noop_exec);
     let extender = new Extender(mockdriver);
-    expect(() => { extender.execCommand('', []); }).toThrowError(RangeError);
+    expect(() => { extender.execCommand('', '', []); }).toThrowError(RangeError);
   });
 
   it('should require correct number of parameters for execution', () => {
@@ -76,6 +76,6 @@ describe('extender', () => {
     let mockdriver = buildMockDriver(sessionId, noop_define, noop_exec);
     let extender = new Extender(mockdriver);
     extender.defineCommand(name, ['command'], method, path);
-    expect(() => { extender.execCommand(name, []); }).toThrowError(RangeError);
+    expect(() => { extender.execCommand(name, method, []); }).toThrowError(RangeError);
   });
 });

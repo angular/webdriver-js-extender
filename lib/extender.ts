@@ -30,7 +30,7 @@ export class Extender {
    */
   defineCommand(name: string, params: string[], method: string, path: string) {
     this.executor_.defineCommand(name, method, path);
-    this.params_[name] = params;
+    this.params_[method + ':' + name] = params;
   }
 
   /**
@@ -41,8 +41,8 @@ export class Extender {
    * @return {webdriver.promise.Promise<*>} A promise that will be resolved with
    *     the command result
    */
-  execCommand<T>(name: string, params: any[]): webdriver.promise.Promise<T> {
-    var paramNames = this.params_[name];
+  execCommand<T>(name: string, method: string, params: any[]): webdriver.promise.Promise<T> {
+    var paramNames = this.params_[method + ':' + name];
     if (paramNames === undefined) {
       throw new RangeError('The command "' + name + '" has not yet been defined');
     }
@@ -53,10 +53,13 @@ export class Extender {
     }
     var command = new Command(name);
     for (var i = 0; i < params.length; i++) {
-      command.setParameter(paramNames[i], params[i]);
+      if (params[i] !== undefined) {
+        command.setParameter(paramNames[i], params[i]);
+      }
     }
     return this.driver_.schedule(
-        command, 'Custom Command: ' + name + '(' +
+        command,
+        'Custom Command: ' + name + '(' +
             params
                 .map((x: any) => {
                   if ((typeof x == 'number') || (typeof x == 'boolean') ||
