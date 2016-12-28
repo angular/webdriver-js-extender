@@ -63,8 +63,10 @@ export class Extender {
             params
                 .map((x: any) => {
                   if ((typeof x == 'number') || (typeof x == 'boolean') ||
-                      (typeof x == 'function') || (x == null)) {
+                      (typeof x == 'function')) {
                     return x.toString();
+                  } else if (x == null) {
+                    return '' + x;
                   } else {
                     return JSON.stringify(x);
                   }
