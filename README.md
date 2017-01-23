@@ -6,9 +6,7 @@ https://www.npmjs.com/package/selenium-webdriver) of the WebDriver API
 to include additional commands (e.g. commands required for [appium](
 https://github.com/appium/appium)).
 
-Currently, few commands are implemented.  But the groundwork has been laid,
-future commands should be easy to add, and PRs are very welcome!  See
-[CONTRIBUTING.md](CONTRIBUTING.md) for details.
+You can view the full list of commands in [`lib/index.ts`](lib/index.ts#L8).
 
 Usage
 -----
