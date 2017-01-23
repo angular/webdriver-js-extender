@@ -1,4 +1,4 @@
-import * as webdriver from 'selenium-webdriver';
+import {promise as wdpromise} from 'selenium-webdriver';
 
 /*
  * Wraps a promised {@link Executor}, ensuring no commands are executed until
@@ -13,14 +13,14 @@ import * as webdriver from 'selenium-webdriver';
  * @implements {Executor}
  */
 export class DeferredExecutor {
-  execute: (command: any) => webdriver.promise.Promise<any>;
+  execute: (command: any) => wdpromise.Promise<any>;
   defineCommand: (name: string, method: string, path: string) => void;
 
   /**
    * @param {!Promise<Executor>} delegate The promised delegate, which
    *     may be provided by any promise-like thenable object.
    */
-  constructor(delegate: webdriver.promise.Promise<any>) {
+  constructor(delegate: wdpromise.Promise<any>) {
     /** @override */
     this.execute = function(command: any) {
       return delegate.then((executor: any) => {

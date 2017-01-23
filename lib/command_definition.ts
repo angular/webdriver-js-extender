@@ -1,5 +1,5 @@
 import {posix as path} from 'path';
-import {promise as Promise} from 'selenium-webdriver';
+import {promise as wdpromise} from 'selenium-webdriver';
 
 import {Extender} from './extender';
 
@@ -8,12 +8,12 @@ export class CommandDefinition<T> {
       public name: string, public params: string[], public method: 'GET'|'POST'|'DELETE'|'PUT',
       public path: string, private preprocessParams: (...args: any[]) => any[] = (x) => x) {}
 
-  compile(extender: Extender, silentFailure: boolean) {
+  compile<T>(extender: Extender, silentFailure: boolean): (...args: any[]) => wdpromise.Promise<T> {
     try {
       extender.defineCommand(
           this.name, this.params, this.method, path.join('/session/:sessionId', this.path));
       return (...args: any[]) => {
-        return extender.execCommand(this.name, this.method, this.preprocessParams(args));
+        return extender.execCommand<T>(this.name, this.method, this.preprocessParams(args));
       }
     } catch (e) {
       if (silentFailure) {
