@@ -1,13 +1,14 @@
-import * as webdriver from 'selenium-webdriver';
+import {promise as wdpromise, WebDriver} from 'selenium-webdriver';
+
 let Command = require('selenium-webdriver/lib/command').Command;
 
 export class Extender {
-  driver_: webdriver.WebDriver;
+  driver_: WebDriver;
   params_: {[key: string]: string[]};
   executor_: {defineCommand: (name: string, method: string, path: string) => void};
 
 
-  constructor(driver: webdriver.WebDriver) {
+  constructor(driver: WebDriver) {
     this.driver_ = driver;
     this.params_ = {};
     this.executor_ =
@@ -41,7 +42,7 @@ export class Extender {
    * @return {webdriver.promise.Promise<*>} A promise that will be resolved with
    *     the command result
    */
-  execCommand<T>(name: string, method: string, params: any[]): webdriver.promise.Promise<T> {
+  execCommand<T>(name: string, method: string, params: any[]): wdpromise.Promise<T> {
     var paramNames = this.params_[method + ':' + name];
     if (paramNames === undefined) {
       throw new RangeError('The command "' + name + '" has not yet been defined');
