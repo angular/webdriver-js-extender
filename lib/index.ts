@@ -147,7 +147,7 @@ export interface ExtendedWebDriver extends WebDriver {
   sendCommand: (cmd: string, params: any) => wdpromise.Promise<void>;
 
   // See TODO
-  sendCommandAndGetResult: (cmd: string, params: any) => wdpromise.Promise<any>;
+  sendCommandAndGetResult: (cmd: string, params: any) => wdpromise.Promise<Object>;
 }
 
 export function extend(baseDriver: WebDriver, fallbackGracefully = false): ExtendedWebDriver {

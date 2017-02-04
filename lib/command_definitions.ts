@@ -148,5 +148,5 @@ export let shakeDevice =
     new CommandDefinition<void>('shakeDevice', [], 'POST', 'appium/device/shake');
 export let sendCommand =
     new CommandDefinition<void>('sendCommand', ['cmd', 'params'], 'POST', '/c/sendcommand');
-export let sendCommandAndGetResult = new CommandDefinition<any>(
+export let sendCommandAndGetResult = new CommandDefinition<Object>(
     'sendCommandAndGetResult', ['cmd', 'params'], 'POST', '/c/sendcommandandgetresult');
