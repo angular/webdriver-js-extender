@@ -150,3 +150,5 @@ export let sendCommand =
     new CommandDefinition<void>('sendCommand', ['cmd', 'params'], 'POST', '/c/sendcommand');
 export let sendCommandAndGetResult = new CommandDefinition<Object>(
     'sendCommandAndGetResult', ['cmd', 'params'], 'POST', '/c/sendcommandandgetresult');
+export let getAllStyleSheets =
+    new CommandDefinition<Object>('getAllStyleSheets', [], 'GET', '/c/getallstylesheets');

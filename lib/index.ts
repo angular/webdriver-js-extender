@@ -144,10 +144,13 @@ export interface ExtendedWebDriver extends WebDriver {
   shakeDevice: () => wdpromise.Promise<void>;
 
   // See TODO
-  sendCommand: (cmd: string, params: any) => wdpromise.Promise<void>;
+  sendCommand: (cmd: string, params: Object) => wdpromise.Promise<void>;
 
   // See TODO
-  sendCommandAndGetResult: (cmd: string, params: any) => wdpromise.Promise<Object>;
+  sendCommandAndGetResult: (cmd: string, params: Object) => wdpromise.Promise<Object>;
+
+  // See TODO
+  getAllStyleSheets: () => wdpromise.Promise<Object>;
 }
 
 export function extend(baseDriver: WebDriver, fallbackGracefully = false): ExtendedWebDriver {
