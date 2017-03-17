@@ -81,7 +81,14 @@ describe('table tests', () => {
         let driver = driverFactory();
         (driver as any)[commandName].apply(driver, testcase.args || []).then(
           (results: Testcase) => {
-            expect(results.result).toEqual(testcase.result == null ? null : testcase.result);
+            let result = results.result
+
+            if (testcase.result != null) {
+              expect(result).toEqual(testcase.result);
+            } else if (result != null) {
+              expect(result.sessionId).toBeDefined();
+              expect(result.status).toEqual(0);
+            }
             if (testcase.session) {
               for (let varname in testcase.session) {
                 expect((results.session as any)[varname]).
