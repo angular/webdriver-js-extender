@@ -157,7 +157,7 @@ export function extend(baseDriver: WebDriver, fallbackGracefully = false): Exten
 }
 
 /**
- * Patches webdriver so that the extender can defie new commands.
+ * Patches webdriver so that the extender can define new commands.
  *
  * @example
  * patch(require('selenium-webdriver/lib/command'),

@@ -11,7 +11,7 @@ You can view the full list of commands in [`lib/index.ts`](lib/index.ts#L8).
 Usage
 -----
 
-If you are using a versoin of `selenium-webdriver` below `3.0.0-beta-1`, you
+If you are using a version of `selenium-webdriver` below `3.0.0-beta-1`, you
 must use the `patch()` function before you create your webdriver instance:
 
 ```js
