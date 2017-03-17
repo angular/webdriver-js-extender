@@ -2,7 +2,6 @@ import {promise as wdpromise, WebDriver} from 'selenium-webdriver';
 
 import {CommandDefinition} from './command_definition';
 import * as commandDefinitions from './command_definitions';
-import {DeferredExecutor} from './deferred_executor';
 import {Extender} from './extender';
 
 export interface ExtendedWebDriver extends WebDriver {
