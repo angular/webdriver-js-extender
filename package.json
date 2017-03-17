@@ -22,8 +22,8 @@
   "license": "MIT",
   "typings": "built/lib/index.d.ts",
   "dependencies": {
-    "@types/selenium-webdriver": "^2.53.35",
-    "selenium-webdriver": "^2.53.2"
+    "@types/selenium-webdriver": "^3.0.0",
+    "selenium-webdriver": "^3.0.1"
   },
   "devDependencies": {
     "@types/jasmine": "^2.5.37",
