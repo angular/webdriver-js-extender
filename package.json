@@ -15,7 +15,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/angular/webdriver-js-entender.git"
+    "url": "git://github.com/angular/webdriver-js-extender.git"
   },
   "main": "built/lib/index.js",
   "author": "Sammy Jelin <sjelin@gmail.com>",
