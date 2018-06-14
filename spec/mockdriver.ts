@@ -1,5 +1,5 @@
 import * as webdriver from 'selenium-webdriver';
-let buildPath = require('selenium-webdriver/http').buildPath;
+let buildPath = require('selenium-webdriver/lib/http').buildPath;
 
 export interface Data {
   sessionId: string;
