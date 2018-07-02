@@ -35,5 +35,8 @@
     "run-sequence": "^1.2.2",
     "selenium-mock": "^0.1.5",
     "typescript": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=6.9.x"
   }
 }
