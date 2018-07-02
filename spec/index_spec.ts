@@ -1,6 +1,5 @@
 import * as webdriver from 'selenium-webdriver';
 import {extend} from '../lib';
-import {DeferredExecutor} from '../lib/deferred_executor';
 import {buildMockDriver, Data} from './mockdriver';
 
 
