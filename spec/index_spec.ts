@@ -1,6 +1,5 @@
 import * as webdriver from 'selenium-webdriver';
-import {extend, patch} from '../lib';
-import {DeferredExecutor} from '../lib/deferred_executor';
+import {extend} from '../lib';
 import {buildMockDriver, Data} from './mockdriver';
 
 
@@ -27,13 +26,5 @@ describe('extender', () => {
       expect(connectionType).toEqual(5);
       done();
     });
-  });
-
-  it('should patch selenium-webdriver', () => {
-    patch(require('selenium-webdriver/lib/command'),
-        require('selenium-webdriver/executors'),
-        require('selenium-webdriver/http'));
-    expect(require('selenium-webdriver/executors').createExecutor(
-      'http://localhost')).toEqual(jasmine.any(DeferredExecutor));
   });
 });

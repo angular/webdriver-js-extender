@@ -5,7 +5,7 @@ import {MockAppium} from '../mock-server';
 import {Session, CommandList} from '../mock-server/interfaces';
 import {session as commandList} from '../mock-server/commands';
 import {Command} from 'selenium-mock';
-import {extend, patch, ExtendedWebDriver} from '../../lib';
+import {extend, ExtendedWebDriver} from '../../lib';
 let portfinder = require('portfinder');
 
 
@@ -28,9 +28,6 @@ export function initMockSeleniumStandaloneServerAndGetDriverFactory(annotateComm
   let server: MockAppium;
   let port: number;
   beforeAll((done) => {
-    patch(require('selenium-webdriver/lib/command'),
-        require('selenium-webdriver/executors'),
-        require('selenium-webdriver/http'));
     portfinder.getPort((err: Error, p: number) => {
       if (err) {
         done.fail(err);

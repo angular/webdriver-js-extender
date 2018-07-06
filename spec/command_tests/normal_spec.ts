@@ -106,7 +106,7 @@ describe('normal tests', () => {
     }).then((fileContents) => {
       expect(fileContents).toBe('bar');
       return driver.pullFolderFromDevice('/tmp/wd_js_ext/folder');
-    }).then((folderContents) => {
+    }).then((folderContents: any) => {
       expect(folderContents['a.txt']).toBe('x');
       expect(folderContents['b.txt']).toBe('y');
       expect(folderContents['c.txt']).toBe('z');
