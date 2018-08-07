@@ -13,10 +13,7 @@
     "selenium",
     "appium"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/angular/webdriver-js-entender.git"
-  },
+  "repository": "github:angular/webdriver-js-extender",
   "main": "built/lib/index.js",
   "author": "Sammy Jelin <sjelin@gmail.com>",
   "license": "MIT",
