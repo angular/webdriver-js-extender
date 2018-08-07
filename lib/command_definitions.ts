@@ -147,7 +147,7 @@ export let rotationGesture = new CommandDefinition(
 export let shakeDevice =
     new CommandDefinition<void>('shakeDevice', [], 'POST', 'appium/device/shake');
 export let sendChromiumCommand =
-    new CommandDefinition<void>('sendCommand', ['cmd', 'params'], 'POST', '/chromium/send_command');
-export let sendCommandAndGetResult = new CommandDefinition<Object>(
+    new CommandDefinition<void>('sendChromiumCommand', ['cmd', 'params'], 'POST', '/chromium/send_command');
+export let sendChromiumCommandAndGetResult = new CommandDefinition<Object>(
     'sendChromiumCommandAndGetResult', ['cmd', 'params'], 'POST',
     '/chromium/send_command_and_get_result');
