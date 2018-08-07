@@ -149,4 +149,5 @@ export let shakeDevice =
 export let sendChromiumCommand =
     new CommandDefinition<void>('sendCommand', ['cmd', 'params'], 'POST', '/chromium/send_command');
 export let sendCommandAndGetResult = new CommandDefinition<Object>(
-    'sendChromiumCommandAndGetResult', ['cmd', 'params'], 'POST', '/chromium/send_command_and_get_result');
+    'sendChromiumCommandAndGetResult', ['cmd', 'params'], 'POST',
+    '/chromium/send_command_and_get_result');
