@@ -93,6 +93,11 @@ export interface AppiumCommandList extends CommandList {
   device: AppiumDeviceCommandList;
 }
 
+export interface ChromiumCommandList extends CommandList {
+  sendChromiumCommand: Command<Session>;
+  sendChromiumCommandAndGetResult: Command<Session>;
+}
+
 // Commands which run against a particular webdriver session (as opposed to the whole server).
 export interface SessionCommandList extends CommandList {
   currentContext: Command<Session>;
@@ -124,4 +129,5 @@ export interface SessionCommandList extends CommandList {
   sessionStorage: StorageCommandList;
   localStorage: StorageCommandList;
   appium: AppiumCommandList;
+  chromium: ChromiumCommandList;
 }
