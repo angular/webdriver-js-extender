@@ -141,6 +141,10 @@ export interface ExtendedWebDriver extends WebDriver {
 
   // See https://github.com/webdriverio/webdriverio/blob/v4.6.1/lib/protocol/shake
   shakeDevice: () => wdpromise.Promise<void>;
+
+  sendChromiumCommand: (cmd: string, params: Object) => wdpromise.Promise<void>;
+
+  sendChromiumCommandAndGetResult: (cmd: string, params: Object) => wdpromise.Promise<Object>;
 }
 
 export function extend(baseDriver: WebDriver, fallbackGracefully = false): ExtendedWebDriver {

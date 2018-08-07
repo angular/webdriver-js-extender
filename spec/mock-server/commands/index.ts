@@ -6,6 +6,7 @@ import {Command} from 'selenium-mock';
 import {SessionCommandList, ElementCommandList, Session} from '../interfaces';
 import {noopFactory as noop, getterFactory as getter, setterFactory as setter, constFactory} from './helpers';
 import {appium} from './appium';
+import {chromium} from './chromium';
 import {storageFactory} from './storage';
 
 export let session = {
@@ -13,6 +14,7 @@ export let session = {
   sessionStorage: storageFactory('session'),
   localStorage: storageFactory('local'),
   appium: appium,
+  chromium: chromium,
 } as SessionCommandList;
 
 session.currentContext = getter('context', 'currentContext');
