@@ -67,8 +67,3 @@ session.performMultiAction = noop('touch/multi/perform');
 session.performTouchAction = noop('touch/perform');
 
 session.element.elementIdLocationInView = constFactory('GET', '/element/:id/location_in_view', {x: 0, y: 0});
-
-/**
-session.sendChromiumCommand = noop('chromium/send_command');
-session.sendChromiumCommandAndGetResult = noop('chromium/send_command_and_get_result');
-*/
