@@ -132,8 +132,8 @@ export let hideSoftKeyboard = new CommandDefinition<void>(
     });
 export let getDeviceTime =
     new CommandDefinition<string>('getDeviceTime', [], 'GET', '/appium/device/system_time');
-exports.fingerprint =
-    new CommandDefinition('fingerprint', ['fingerprintId'], 'POST', '/appium/device/finger_print');
+export let fingerprint = 
+    new CommandDefinition<void>('fingerprint', ['fingerprintId'], 'POST', '/appium/device/finger_print');
 export let openDeviceNotifications = new CommandDefinition<void>(
     'openDeviceNotifications', [], 'POST', '/appium/device/open_notifications');
 export let rotationGesture = new CommandDefinition(
