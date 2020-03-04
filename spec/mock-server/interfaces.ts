@@ -81,6 +81,8 @@ export interface AppiumDeviceCommandList extends CommandList {
   openNotifications: Command<Session>;
   rotate: Command<Session>;
   shake: Command<Session>;
+  startRecordingScreen:Command<Session>;
+  stopRecordingScreen: Command<Session>;
 }
 
 // Commands which are part of the appium API but will probably never be part of the webdriver
@@ -91,6 +93,7 @@ export interface AppiumCommandList extends CommandList {
   setImmediateValue: Command<Session>;
   app: AppiumAppCommandList;
   device: AppiumDeviceCommandList;
+
 }
 
 export interface ChromiumCommandList extends CommandList {

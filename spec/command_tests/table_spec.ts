@@ -64,7 +64,9 @@ describe('table tests', () => {
         {args: [1,2,3,90,5], params: {x: 1, y: 2, duration: 3, rotation: 90, touchCount: 5}}],
     shakeDevice: {},
     sendChromiumCommand: {args: ['DOM.enable', {}]},
-    sendChromiumCommandAndGetResult: {args: ['DOM.enable', {}]}
+    sendChromiumCommandAndGetResult: {args: ['DOM.enable', {}]},
+    startRecordingScreen:{},
+    stopRecordingScreen:{}
   }
   function runTestcase(commandName: string) {
     let itName = 'should correctly call "' + commandName + '"';

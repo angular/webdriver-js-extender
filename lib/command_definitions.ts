@@ -151,3 +151,9 @@ export let sendChromiumCommand = new CommandDefinition<void>(
 export let sendChromiumCommandAndGetResult = new CommandDefinition<Object>(
     'sendChromiumCommandAndGetResult', ['cmd', 'params'], 'POST',
     '/chromium/send_command_and_get_result');
+
+export let startRecordingScreen = new CommandDefinition<void>(
+    'startRecordingScreen', [], 'POST', 'appium/start_recording_screen');
+
+export let stopRecordingScreen = new CommandDefinition<string>(
+    'stopRecordingScreen', [], 'POST', 'appium/stop_recording_screen');
