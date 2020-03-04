@@ -121,6 +121,9 @@ device.openNotifications = noop('/appium/device/open_notifications');
 device.rotate = noop('appium/device/rotate');
 device.shake = noop('appium/device/shake');
 
+device.startRecordingScreen = noop('appium/start_recording_screen');
+device.stopRecordingScreen = noop('appium/stop_recording_screen');
+
 
 appium.getSettings = getter('/appium/settings');
 appium.setSettings = setter('/appium/settings');

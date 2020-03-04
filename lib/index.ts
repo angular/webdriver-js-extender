@@ -145,6 +145,12 @@ export interface ExtendedWebDriver extends WebDriver {
   sendChromiumCommand: (cmd: string, params: Object) => wdpromise.Promise<void>;
 
   sendChromiumCommandAndGetResult: (cmd: string, params: Object) => wdpromise.Promise<Object>;
+
+  // See https://appium.readthedocs.io/en/latest/en/commands/device/recording-screen/start-recording-screen/
+  startRecordingScreen: () => wdpromise.Promise<void>;
+
+  // See https://appium.readthedocs.io/en/latest/en/commands/device/recording-screen/stop-recording-screen/
+  stopRecordingScreen: () => wdpromise.Promise<string>;
 }
 
 export function extend(baseDriver: WebDriver, fallbackGracefully = false): ExtendedWebDriver {
