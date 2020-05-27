@@ -1,5 +1,4 @@
-import {initMockSeleniumStandaloneServerAndGetDriverFactory} from './helpers';
-import * as path from 'path';
+import {initMockSeleniumStandaloneServerAndGetDriverFactory, APK_PATH} from './helpers';
 
 describe('normal tests', () => {
   let driverFactory = initMockSeleniumStandaloneServerAndGetDriverFactory();
@@ -81,7 +80,7 @@ describe('normal tests', () => {
 
   it('should install/uninstall an app', (done) => {
     let driver = driverFactory();
-    driver.installApp(path.resolve(__dirname, 'totally_real_apk.apk')).then(() => {
+    driver.installApp(APK_PATH).then(() => {
       return driver.isAppInstalled('sjelin.is.cool');
     }).then((isInstalled) => {
       expect(isInstalled).toBe(true);

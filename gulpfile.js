@@ -1,58 +1,39 @@
 'use strict';
 
-var gulp = require('gulp');
-var runSequence = require('run-sequence');
-var spawn = require('child_process').spawn;
-const format = require('gulp-clang-format');
+const gulp = require('gulp');
+const spawn = require('child_process').spawn;
+const gulpClangFormat = require('gulp-clang-format');
 const clangFormat = require('clang-format');
 
-var runSpawn = function(done, task, opt_arg) {
-  opt_arg = typeof opt_arg !== 'undefined' ? opt_arg : [];
-  var child = spawn(task, opt_arg, {stdio: 'inherit'});
-  var running = false;
-  child.on('close', function() {
-    if (!running) {
-      running = true;
-      done();
-    }
-  });
-  child.on('error', function() {
-    if (!running) {
-      console.error('gulp encountered a child error');
-      running = true;
-      done();
-    }
-  });
+function runSpawn(task, opt_arg) {;
+  return spawn(task, opt_arg, {stdio: 'inherit'});
 };
 
-gulp.task('copy', function() {
-  return gulp.src(['!(built/)**/*.apk', 'package.json'])
-      .pipe(gulp.dest('built/'));
-});
+function copy() {
+  return gulp.src(['package.json', 'built/lib/**/*'], {base: '.'})
+      .pipe(gulp.dest('dist'));
+}
 
-gulp.task('format:enforce', () => {
+function formatEnforce() {
   return gulp.src(['lib/**/*.ts']).pipe(
-    format.checkFormat('file', clangFormat, {verbose: true, fail: true}));
-});
+    gulpClangFormat.checkFormat('file', clangFormat, {verbose: true, fail: true}));
+}
 
-gulp.task('format', () => {
+function format() {
   return gulp.src(['lib/**/*.ts'], { base: '.' }).pipe(
-    format.format('file', clangFormat)).pipe(gulp.dest('.'));
-});
+    gulpClangFormat.format('file', clangFormat)).pipe(gulp.dest('.'));
+}
 
-gulp.task('tsc', function(done) {
-  runSpawn(done, process.execPath, ['node_modules/typescript/bin/tsc']);
-});
+function build() {
+  return runSpawn(process.execPath, ['node_modules/typescript/bin/tsc']);
+}
 
-gulp.task('prepublish', function(done) {
-  runSequence('format', 'tsc', 'copy', done);
-});
+function test() {
+  return runSpawn(process.execPath, ['node_modules/jasmine/bin/jasmine.js']);
+}
 
-gulp.task('default',['prepublish']);
-gulp.task('build',['prepublish']);
-
-gulp.task('test', ['build'], function(done) {
-  var opt_arg = [];
-  opt_arg.push('node_modules/jasmine/bin/jasmine.js');
-  runSpawn(done, process.execPath, opt_arg);
-});
+module.exports = {
+  'format:enforce': formatEnforce,
+  prepublish: gulp.series(format, build, copy),
+  test: gulp.series(build, test),
+};

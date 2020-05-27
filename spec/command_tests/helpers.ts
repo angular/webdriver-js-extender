@@ -5,9 +5,14 @@ import {MockAppium} from '../mock-server';
 import {Session, CommandList} from '../mock-server/interfaces';
 import {session as commandList} from '../mock-server/commands';
 import {Command} from 'selenium-mock';
-import {extend, ExtendedWebDriver} from '../../lib';
+import {extend} from '../../lib';
 let portfinder = require('portfinder');
+import * as path from 'path';
 
+// PROJECT_PATH is where package.json is located.
+// __dirname after project is compiled is built/spec/command_tests/
+const PROJECT_PATH = path.resolve(__dirname, '..', '..', '..');
+export const APK_PATH = path.join(PROJECT_PATH, 'spec', 'command_tests', 'totally_real_apk.apk');
 
 let commandMap: {[location: string]: Command<Session>} = null;
 function buildCommandMap(commandList: CommandList) {

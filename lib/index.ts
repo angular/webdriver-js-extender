@@ -1,6 +1,5 @@
 import {promise as wdpromise, WebDriver} from 'selenium-webdriver';
 
-import {CommandDefinition} from './command_definition';
 import * as commandDefinitions from './command_definitions';
 import {Extender} from './extender';
 

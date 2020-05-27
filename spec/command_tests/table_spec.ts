@@ -1,6 +1,5 @@
-import {initMockSeleniumStandaloneServerAndGetDriverFactory} from './helpers';
+import {initMockSeleniumStandaloneServerAndGetDriverFactory, APK_PATH} from './helpers';
 import {Session} from '../mock-server/interfaces';
-import * as path from 'path';
 
 export interface Testcase {
   skip?: boolean;
@@ -35,7 +34,7 @@ describe('table tests', () => {
     fullscreen: {},
 
     getAppiumSettings: {result: {ignoreUnimportantViews: false}},
-    setAppiumSettings: {args: [{ignoreUnimportantViews: true}], params: {settings: 
+    setAppiumSettings: {args: [{ignoreUnimportantViews: true}], params: {settings:
         {ignoreUnimportantViews: true}}},
     sendAppToBackground: [{params: {seconds: 0}}, {args: [1], params: {seconds: 1}}],
     closeApp: {},
@@ -49,8 +48,8 @@ describe('table tests', () => {
         {args: ['a', 'b'], params: {appPackage: 'a', appActivity: 'b'}}],
     hideSoftKeyboard: [{params: {strategy: 'default'}},
         {args: ['pressKey', 'Done'], params: {strategy: 'pressKey', key: 'Done'}}],
-    installApp: {args: [path.resolve(__dirname, 'totally_real_apk.apk')],
-        params: {appPath: path.resolve(__dirname, 'totally_real_apk.apk')}},
+    installApp: {args: [APK_PATH],
+        params: {appPath: APK_PATH}},
     isAppInstalled: {result: false, args: ['sjelin.is.cool'], params: {bundleId: 'sjelin.is.cool'}},
     removeApp: {args: ['sjelin.is.cool'], params: {appId: 'sjelin.is.cool'}},
     isDeviceLocked: {result: false},
