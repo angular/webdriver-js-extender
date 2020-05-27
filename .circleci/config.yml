@@ -1,0 +1,40 @@
+# Configuration file for https://circleci.com/gh/angular/webdriver-js-extender
+
+# CircleCI configuration version
+# Version 2.1 allows for extra config reuse features
+# https://circleci.com/docs/2.0/reusing-config/#getting-started-with-config-reuse
+version: 2.1
+
+# Orb configuration
+# List of orbs to be imported.
+# https://circleci.com/docs/2.0/orb-intro/#importing-an-existing-orb
+orbs:
+  node: circleci/node@2.1.1
+
+# Job definitions
+# Jobs can include parameters that are passed in the workflow job invocation.
+# https://circleci.com/docs/2.0/reusing-config/#authoring-parameterized-jobs
+jobs:
+  test:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - checkout
+      - node/install:
+          install-yarn: true
+          install-npm: false
+          node-version: '12.17.0'
+      - run:
+          name: Running Yarn install
+          command: yarn install --frozen-lockfile --non-interactive
+          # Yarn's requests sometimes take more than 10mins to complete.
+          no_output_timeout: 45m
+      - run:
+          name: Unit Tests
+          command: yarn test
+
+workflows:
+  version: 2
+  default_workflow:
+    jobs:
+      - test
