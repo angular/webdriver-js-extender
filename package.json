@@ -3,7 +3,7 @@
   "version": "2.2.0",
   "description": "A plugin which adds additional commands to selenium's javascript implementation of the webdriver client side API",
   "scripts": {
-    "prepublish": "gulp prepublish",
+    "build": "rm -rf built dist && gulp prepublish",
     "test": "gulp test"
   },
   "keywords": [

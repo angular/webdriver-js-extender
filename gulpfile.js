@@ -10,7 +10,12 @@ function runSpawn(task, opt_arg) {;
 };
 
 function copy() {
-  return gulp.src(['package.json', 'built/lib/**/*'], {base: '.'})
+  return gulp.src([
+    'package.json',
+    'LICENSE',
+    'README.md',
+    'built/lib/**/*',
+  ], {base: '.'})
       .pipe(gulp.dest('dist'));
 }
 
