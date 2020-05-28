@@ -126,6 +126,8 @@ export interface ExtendedWebDriver extends WebDriver {
       (strategy?: 'default'|'tapOutside'|'tapOut'|'swipeDown'|'pressKey'|'press',
        key?: string) => wdpromise.Promise<void>;
 
+  fingerprint: (fingerprintId: string) => wdpromise.Promise<void>;
+
   // See https://github.com/webdriverio/webdriverio/blob/v4.6.1/lib/protocol/getDeviceTime
   getDeviceTime: () => wdpromise.Promise<string>;
 
